@@ -8,15 +8,8 @@ from rest_framework.decorators import api_view
 
 @api_view(["GET"])
 def index(request):
-    MyUser.objects.create(
-            user_id="TaroYamada",
-            password="PaSSwd4TY",
-            nickname="たろー",
-            comment="僕は元気です"
-        )
-    return Response({
-        "message": "テストデータを作成しました"
-    })
+    return Response({"message": "テストAPIが動作しています。"})
+
 
 class SignUpView(APIView):
     def post(self, request):
