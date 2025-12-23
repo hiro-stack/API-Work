@@ -3,10 +3,14 @@ import base64
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import MyUser
+from rest_framework.decorators import api_view
 
 
+@api_view(["GET"])
 def index(request):
-    return Response({"message": "Welcome to my API!"})
+    return Response({
+        "message": "Welcome to my API"
+    })
 
 class SignUpView(APIView):
     def post(self, request):
