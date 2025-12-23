@@ -2,9 +2,11 @@ import re
 import base64
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from .models import MyUser
 
+
+def index(request):
+    return Response({"message": "Welcome to my API!"})
 
 class SignUpView(APIView):
     def post(self, request):
