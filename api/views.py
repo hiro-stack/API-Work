@@ -81,6 +81,7 @@ class SignUpView(APIView):
 
 class UserView(APIView):
     def get(self, request, user_id):
+        """
         auth_header = request.headers.get("Authorization")
 
         # 認証チェック
@@ -95,15 +96,16 @@ class UserView(APIView):
         except Exception:
             return Response({"message": "Authentication failed"}, status=401)
 
+        # 認証情報と一致するか確認
+        if user.user_id != auth_user_id or user.password != password:
+            return Response({"message": "Authentication failed"}, status=401)
+        """
+
         # ユーザー存在確認
         try:
             user = MyUser.objects.get(user_id=user_id)
         except MyUser.DoesNotExist:
             return Response({"message": "No user found"}, status=404)
-
-        # 認証情報と一致するか確認
-        if user.user_id != auth_user_id or user.password != password:
-            return Response({"message": "Authentication failed"}, status=401)
 
         # nicknameの補完処理
         nickname = user.nickname if user.nickname else user.user_id
@@ -118,7 +120,7 @@ class UserView(APIView):
         )
 
     def patch(self, request, user_id):
-
+        """
         # Authorizationヘッダーの取得
         auth_header = request.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Basic "):
@@ -132,17 +134,18 @@ class UserView(APIView):
         except Exception:
             return Response({"message": "Authentication failed"}, status=401)
 
-        # 該当ユーザー取得
-        try:
-            user = MyUser.objects.get(user_id=user_id)
-        except MyUser.DoesNotExist:
-            return Response({"message": "No user found"}, status=404)
-
         # 認証一致チェック
         if user.user_id != auth_user_id:
             return Response({"message": "No permission for update"}, status=403)
         if user.password != password:
             return Response({"message": "Authentication failed"}, status=401)
+        """
+
+        # 該当ユーザー取得
+        try:
+            user = MyUser.objects.get(user_id=user_id)
+        except MyUser.DoesNotExist:
+            return Response({"message": "No user found"}, status=404)
 
         # user_id, password更新試みをブロック
         if "user_id" in request.data or "password" in request.data:
